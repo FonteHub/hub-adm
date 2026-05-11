@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fonte Hub - Gerador Proposta Comercial</title>
+    <title>Fonte Hub - Gerador Proposta V19 (Master Admin)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -14,13 +14,17 @@
         body { font-family: 'Roboto', sans-serif; background: #eceff1; margin: 0; padding: 20px; color: #333; }
 
         .container { max-width: 1300px; margin: 0 auto; }
-        .header { background: var(--navy); color: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .header h1 { margin: 0; font-size: 24px; }
-        .file-status { font-size: 14px; background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-weight: bold; }
-        
+        .header { background: var(--navy); color: white; padding: 20px 25px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .header h1 { margin: 0; font-size: 22px; }
+        .header-controls { display: flex; align-items: center; gap: 15px; }
+        .file-status { font-size: 13px; background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-weight: bold; }
+        .btn-admin { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.2s; }
+        .btn-admin:hover { background: rgba(255,255,255,0.2); }
+
         .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
         h2 { margin-top: 0; color: var(--navy); font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 10px; text-transform: uppercase; }
 
+        /* TABELA DE SELEÇÃO PRINCIPAL */
         .selection-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .selection-table th { background: #f4f6f8; padding: 12px; text-align: left; font-size: 12px; color: #555; text-transform: uppercase; border-bottom: 2px solid #ddd; }
         .selection-table td { padding: 10px 10px; border-bottom: 1px solid #eee; vertical-align: middle; }
@@ -34,22 +38,25 @@
         .btn-group { display: flex; gap: 15px; margin-top: 20px; }
         .btn { padding: 18px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; font-size: 16px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; color: white; }
         .btn-preview { background: #34495e; }
-        .btn-preview:hover { background: #2c3e50; transform: translateY(-2px); }
         .btn-generate { background: #27ae60; }
         .btn-generate:hover { background: #219653; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(39,174,96,0.3); }
 
+        /* MODAL ADMIN */
+        #admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center; }
+        .admin-content { background: white; width: 900px; max-height: 90vh; border-radius: 12px; padding: 30px; overflow-y: auto; position: relative; }
+        .admin-close { position: absolute; top: 20px; right: 20px; background: red; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-weight: bold; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .admin-table th { background: var(--navy); color: white; padding: 10px; font-size: 12px; text-align: left; }
+        .admin-table td { padding: 8px; border-bottom: 1px solid #ddd; }
+        .btn-save-admin { background: #27ae60; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-add-admin { background: var(--navy); color: white; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px; margin-right: 10px; }
+
+        /* PREVIEW HTML */
         #preview-section { display: none; margin-top: 30px; flex-direction: column; align-items: center; }
-        .preview-slide {
-            width: 1280px; height: 720px; position: relative; margin-bottom: 30px;
-            background-color: var(--navy); background-size: cover; background-position: center;
-            color: white; padding: 80px 100px; display: flex; flex-direction: column;
-            transform: scale(0.75); transform-origin: top center; margin-bottom: -150px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-radius: 4px;
-        }
+        .preview-slide { width: 1280px; height: 720px; position: relative; margin-bottom: 30px; background-color: var(--navy); background-size: cover; background-position: center; color: white; padding: 80px 100px; display: flex; flex-direction: column; transform: scale(0.75); transform-origin: top center; margin-bottom: -150px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-radius: 4px; }
         .prop-header { border-left: 5px solid var(--accent); padding-left: 20px; margin-bottom: 30px; }
         .prop-header h1 { font-size: 44px; margin: 0; }
         .prop-header p { font-size: 22px; opacity: 0.9; margin: 5px 0 0 0; min-height: 26px; }
-
         .html-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .html-table th { text-align: left; padding: 10px; font-size: 14px; color: var(--accent); border-bottom: 2px solid rgba(255,255,255,0.3); }
         .html-table td { padding: 14px 10px; font-size: 24px; border-bottom: 1px solid rgba(255,255,255,0.15); }
@@ -66,127 +73,42 @@
 
 <div class="container">
     <div class="header">
-        <h1>Configurador de Proposta Elite - Fonte Hub</h1>
-        <div class="file-status" id="file-count">0 / 17 imagens carregadas</div>
+        <h1>Gerador de Propostas - Fonte Hub</h1>
+        <div class="header-controls">
+            <div class="file-status" id="file-count">0 / 17 imagens</div>
+            <button class="btn-admin" onclick="openAdmin()">⚙️ Configurações</button>
+        </div>
     </div>
 
     <div class="card">
         <h2>1. Dados do Cliente e Imagens</h2>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
             <div>
-                <label style="display:block; font-weight:bold; margin-bottom:5px;">Carregar Slides (Selecione PNGs de 1 a 17 simultaneamente)</label>
+                <label style="display:block; font-weight:bold; margin-bottom:5px;">Carregar Slides (Selecione PNGs de 1 a 17)</label>
                 <input type="file" id="img-input" multiple accept="image/*" style="width:100%">
             </div>
             <div>
                 <label style="display:block; font-weight:bold; margin-bottom:5px;">Nome do Cliente</label>
-                <input type="text" id="client-name" placeholder="Nome da Empresa" style="width:100%" oninput="updateOnChange()">
+                <input type="text" id="client-name" placeholder="Ex: Grupo Rede Gazeta" style="width:100%" oninput="updateOnChange()">
             </div>
         </div>
     </div>
 
     <div class="card">
-        <h2>2. Serviços e Descontos</h2>
+        <h2>2. Tabela de Serviços</h2>
         <table class="selection-table">
             <thead>
                 <tr>
                     <th style="text-align:center; width:50px;">Sel.</th>
                     <th>Descrição do Serviço</th>
-                    <th style="width:120px;">Valor Unit.</th>
+                    <th style="width:140px;">Valor Unit.</th>
                     <th style="width:100px; text-align:center;">Qtd.</th>
                     <th style="width:120px; text-align:center;">Desconto</th>
                     <th style="width:80px;">Tipo</th>
                 </tr>
             </thead>
             <tbody id="services-list">
-                <tr data-price="1300" data-slides="10">
-                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
-                    <td>2 estações de trabalho (Coworking)</td>
-                    <td>R$ 1.300,00</td>
-                    <td><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
-                    <td><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
-                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
-                </tr>
-                <tr data-price="2000" data-slides="10">
-                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
-                    <td>4 estações de trabalho (Coworking)</td>
-                    <td>R$ 2.000,00</td>
-                    <td><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
-                    <td><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
-                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
-                </tr>
-                <tr data-price="6500" data-slides="11">
-                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
-                    <td>Sala privativa - 8 posições</td>
-                    <td>R$ 6.500,00</td>
-                    <td><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
-                    <td><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
-                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
-                </tr>
-                <tr data-price="250" data-slides="12">
-                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
-                    <td>Sala de reunião 4 horas - 6 ou 8 pessoas</td>
-                    <td>R$ 250,00</td>
-                    <td><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
-                    <td><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
-                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
-                </tr>
-                <tr data-price="380" data-slides="12">
-                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
-                    <td>Sala de reunião 8 horas - 6 ou 8 pessoas</td>
-                    <td>R$ 380,00</td>
-                    <td><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
-                    <td><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
-                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
-                </tr>
-                <tr data-price="450" data-slides="13">
-                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
-                    <td>Sala treinamento Brainstorming 4 horas</td>
-                    <td>R$ 450,00</td>
-                    <td><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
-                    <td><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
-                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
-                </tr>
-                <tr data-price="650" data-slides="13">
-                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
-                    <td>Sala treinamento 8 horas - 24 posições</td>
-                    <td>R$ 650,00</td>
-                    <td><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
-                    <td><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
-                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
-                </tr>
-                <tr data-price="270" data-slides="14,15">
-                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
-                    <td>Utilização do Estúdio Videocast (Hora)</td>
-                    <td>R$ 270,00</td>
-                    <td><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
-                    <td><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
-                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
-                </tr>
-                <tr data-price="220" data-slides="14,15">
-                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
-                    <td>Edição simples de Videocast</td>
-                    <td>R$ 220,00</td>
-                    <td><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
-                    <td><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
-                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
-                </tr>
-                <tr data-price="220" data-slides="14,15">
-                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
-                    <td>Edição Simples de Corte de Videocast</td>
-                    <td>R$ 220,00</td>
-                    <td><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
-                    <td><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
-                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
-                </tr>
-                <tr data-price="2500" data-slides="14,15">
-                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
-                    <td>Transmissão Ao vivo (Live)</td>
-                    <td>R$ 2.500,00</td>
-                    <td><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
-                    <td><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
-                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
-                </tr>
-            </tbody>
+                </tbody>
         </table>
         
         <div class="btn-group">
@@ -198,12 +120,144 @@
 
 <div id="preview-section"></div>
 
+<div id="admin-modal">
+    <div class="admin-content">
+        <button class="admin-close" onclick="closeAdmin()">X</button>
+        <h2 style="color:var(--navy);">⚙️ Painel de Administrador - Fonte Hub</h2>
+        <p style="font-size: 14px; color: #666; margin-top: -5px;">Adicione, remova ou altere os preços e nomes dos serviços oferecidos. As configurações ficam guardadas no seu navegador.</p>
+        
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Nome do Serviço</th>
+                    <th style="width: 120px;">Preço (R$)</th>
+                    <th style="width: 100px;">Nº Slides</th>
+                    <th style="width: 50px;">Ação</th>
+                </tr>
+            </thead>
+            <tbody id="admin-services-list">
+                </tbody>
+        </table>
+        <button class="btn-add-admin" onclick="addAdminRow()">+ Adicionar Novo Serviço</button>
+        <button class="btn-save-admin" onclick="saveAdmin()">💾 Guardar Configurações</button>
+        <button class="btn-admin" style="background:#e74c3c; border:none; margin-top:20px; padding:12px; float:right;" onclick="resetToFactory()">Restaurar Original</button>
+    </div>
+</div>
+
 <div id="loading-overlay">
     <div class="spinner"></div>
     <h2 style="color: white;">Processando PDF...</h2>
 </div>
 
 <script>
+    // ----------------------------------------------------
+    // 1. FUNÇÃO DE MOEDA (Colocada no topo para evitar erros)
+    // ----------------------------------------------------
+    const fmt = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    // ----------------------------------------------------
+    // 2. GESTÃO DE CONFIGURAÇÕES (ADMIN)
+    // ----------------------------------------------------
+    const defaultServices = [
+        { desc: "2 estações de trabalho (Coworking)", price: 1300, slides: "10" },
+        { desc: "4 estações de trabalho (Coworking)", price: 2000, slides: "10" },
+        { desc: "Sala privativa - 8 posições", price: 6500, slides: "11" },
+        { desc: "Sala de reunião 4 horas - 6 ou 8 pessoas", price: 250, slides: "12" },
+        { desc: "Sala de reunião 8 horas - 6 ou 8 pessoas", price: 380, slides: "12" },
+        { desc: "Sala treinamento Brainstorming 4 horas", price: 450, slides: "13" },
+        { desc: "Sala treinamento 8 horas - 24 posições", price: 650, slides: "13" },
+        { desc: "Utilização do Estúdio Videocast (Hora)", price: 270, slides: "14,15" },
+        { desc: "Edição simples de Videocast", price: 220, slides: "14,15" },
+        { desc: "Edição Simples de Corte de Videocast", price: 220, slides: "14,15" },
+        { desc: "Transmissão Ao vivo (Live)", price: 2500, slides: "14,15" }
+    ];
+
+    let currentServices = JSON.parse(localStorage.getItem('fonteHubConfig')) || defaultServices;
+
+    function renderMainTable() {
+        const tbody = document.getElementById('services-list');
+        tbody.innerHTML = '';
+        currentServices.forEach(srv => {
+            tbody.innerHTML += `
+                <tr data-price="${srv.price}" data-slides="${srv.slides}">
+                    <td style="text-align:center;"><input type="checkbox" class="srv-check check-custom" onchange="updateOnChange()"></td>
+                    <td>${srv.desc}</td>
+                    <td>${fmt(srv.price)}</td>
+                    <td style="text-align:center;"><input type="number" class="srv-qty input-qty" value="1" min="1" onchange="updateOnChange()"></td>
+                    <td style="text-align:center;"><input type="number" class="srv-disc input-discount" value="0" min="0" onchange="updateOnChange()"></td>
+                    <td><select class="srv-disc-type" onchange="updateOnChange()"><option value="%">%</option><option value="R$">R$</option></select></td>
+                </tr>
+            `;
+        });
+    }
+
+    renderMainTable();
+
+    function openAdmin() {
+        const pwd = prompt("Área Restrita. Digite a senha de administrador:");
+        if (pwd === "Gazeta1234") {
+            document.getElementById('admin-modal').style.display = 'flex';
+            renderAdminTable();
+        } else if (pwd !== null) {
+            alert("Senha incorreta!");
+        }
+    }
+
+    function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
+
+    function renderAdminTable() {
+        const tbody = document.getElementById('admin-services-list');
+        tbody.innerHTML = '';
+        currentServices.forEach((srv, i) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td><input type="text" id="adm-desc-${i}" value="${srv.desc}" style="width:100%"></td>
+                    <td><input type="number" id="adm-price-${i}" value="${srv.price}" style="width:100%"></td>
+                    <td><input type="text" id="adm-slides-${i}" value="${srv.slides}" style="width:100%" placeholder="ex: 10,11"></td>
+                    <td style="text-align:center;"><button onclick="removeAdminRow(${i})" style="background:#e74c3c; color:white; border:none; padding:8px 12px; cursor:pointer; border-radius:4px; font-weight:bold;">X</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    function addAdminRow() {
+        currentServices.push({ desc: "Nome do Novo Serviço", price: 0, slides: "10" });
+        renderAdminTable();
+    }
+
+    function removeAdminRow(i) {
+        currentServices.splice(i, 1);
+        renderAdminTable();
+    }
+
+    function saveAdmin() {
+        const newServices = [];
+        for(let i=0; i < currentServices.length; i++) {
+            newServices.push({
+                desc: document.getElementById(`adm-desc-${i}`).value,
+                price: parseFloat(document.getElementById(`adm-price-${i}`).value) || 0,
+                slides: document.getElementById(`adm-slides-${i}`).value
+            });
+        }
+        currentServices = newServices;
+        localStorage.setItem('fonteHubConfig', JSON.stringify(currentServices));
+        renderMainTable();
+        closeAdmin();
+        alert("Configurações atualizadas e salvas com sucesso!");
+    }
+
+    function resetToFactory() {
+        if(confirm("ATENÇÃO: Isto irá apagar as suas alterações e voltar à tabela original da Fonte Hub. Tem a certeza?")) {
+            currentServices = JSON.parse(JSON.stringify(defaultServices));
+            localStorage.setItem('fonteHubConfig', JSON.stringify(currentServices));
+            renderMainTable();
+            renderAdminTable();
+        }
+    }
+
+    // ----------------------------------------------------
+    // 3. GESTÃO DO GERADOR PDF E PREVIEW
+    // ----------------------------------------------------
     let imagesData = {};
     let bgUrl16 = "";
 
@@ -226,8 +280,6 @@
         document.getElementById('file-count').innerText = `${Object.keys(imagesData).length} / 17 imagens carregadas`;
         if(document.getElementById('preview-section').style.display === 'flex') renderPreview();
     });
-
-    const fmt = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
     function getSelectedItems() {
         return Array.from(document.querySelectorAll('.srv-check:checked')).map(cb => {
@@ -330,7 +382,6 @@
                 return dataObj.type.includes('png') ? await pdfDoc.embedPng(dataObj.buffer) : await pdfDoc.embedJpg(dataObj.buffer);
             }
 
-            // 1. CAPAS 1 A 8
             for (let i = 1; i <= 8; i++) {
                 if (imagesData[i]) {
                     const img = await embedCorrectImage(imagesData[i]);
@@ -338,14 +389,12 @@
                 }
             }
 
-            // 2. SLIDE 9 (BENEFÍCIOS) - CONDICIONAL
             const needsSlide9 = selectedRows.some(r => r.slides.includes(10) || r.slides.includes(11));
             if (needsSlide9 && imagesData[9]) {
                 const img = await embedCorrectImage(imagesData[9]);
                 pdfDoc.addPage([1280, 720]).drawImage(img, { x: 0, y: 0, width: 1280, height: 720 });
             }
 
-            // 3. SLIDES DE PRODUTO (10 A 15)
             const extraSlides = [...new Set(selectedRows.flatMap(r => r.slides))].sort((a,b) => a-b);
             for (let s of extraSlides) {
                 if (s >= 10 && s <= 15 && imagesData[s]) {
@@ -354,7 +403,6 @@
                 }
             }
 
-            // 4. PROPOSTA DINÂMICA (SLIDE 16)
             const ITEMS_PER_PAGE = 7;
             const totalPages = Math.ceil(selectedRows.length / ITEMS_PER_PAGE);
             const dataAtual = new Date().toLocaleDateString('pt-BR');
@@ -427,7 +475,6 @@
                 }
             }
 
-            // 5. SLIDE 17 (CONTATO)
             if (imagesData[17]) {
                 const img = await embedCorrectImage(imagesData[17]);
                 pdfDoc.addPage([1280, 720]).drawImage(img, { x: 0, y: 0, width: 1280, height: 720 });
