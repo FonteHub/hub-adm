@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fonte Hub - Gerador Proposta Comercial V18</title>
+    <title>Fonte Hub - Gerador Proposta Comercial V18 (Auto-Load)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -39,13 +39,7 @@
         .btn-generate:hover { background: #219653; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(39,174,96,0.3); }
 
         #preview-section { display: none; margin-top: 30px; flex-direction: column; align-items: center; }
-        .preview-slide {
-            width: 1280px; height: 720px; position: relative; margin-bottom: 30px;
-            background-color: var(--navy); background-size: cover; background-position: center;
-            color: white; padding: 80px 100px; display: flex; flex-direction: column;
-            transform: scale(0.75); transform-origin: top center; margin-bottom: -150px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-radius: 4px;
-        }
+        .preview-slide { width: 1280px; height: 720px; position: relative; margin-bottom: 30px; background-color: var(--navy); background-size: cover; background-position: center; color: white; padding: 80px 100px; display: flex; flex-direction: column; transform: scale(0.75); transform-origin: top center; margin-bottom: -150px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-radius: 4px; }
         .prop-header { border-left: 5px solid var(--accent); padding-left: 20px; margin-bottom: 30px; }
         .prop-header h1 { font-size: 44px; margin: 0; }
         .prop-header p { font-size: 22px; opacity: 0.9; margin: 5px 0 0 0; min-height: 26px; }
@@ -67,15 +61,19 @@
 <div class="container">
     <div class="header">
         <h1>Configurador de Proposta Elite - Fonte Hub</h1>
-        <div class="file-status" id="file-count">0 / 17 imagens carregadas</div>
+        <div class="file-status" id="file-count">A iniciar sistema...</div>
     </div>
 
     <div class="card">
-        <h2>1. Dados do Cliente e Imagens</h2>
+        <h2>1. Dados do Cliente e Layout</h2>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
             <div>
-                <label style="display:block; font-weight:bold; margin-bottom:5px;">Carregar Slides (Selecione PNGs de 1 a 17)</label>
-                <input type="file" id="img-input" multiple accept="image/*" style="width:100%">
+                <label style="display:block; font-weight:bold; margin-bottom:5px;">Layout da Proposta</label>
+                <div id="layout-status" style="padding: 10px; background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 4px; color: #2e7d32; font-weight: bold; font-size: 14px;">
+                    ⏳ A transferir layout oficial do servidor...
+                </div>
+                <p style="font-size: 11px; color: #777; margin-top: 5px;">Se quiser usar um design diferente, <a href="#" onclick="document.getElementById('img-input').click(); return false;">clique aqui para substituir</a>.</p>
+                <input type="file" id="img-input" multiple accept="image/*" style="display:none;">
             </div>
             <div>
                 <label style="display:block; font-weight:bold; margin-bottom:5px;">Nome do Cliente</label>
@@ -204,16 +202,47 @@
 </div>
 
 <script>
-    // FORMATAÇÃO NO TOPO (Corrige o erro do ecrã em branco)
+    // FORMATAÇÃO DE MOEDA NO TOPO
     const fmt = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
     let imagesData = {};
     let bgUrl16 = "";
 
-    const imgInput = document.getElementById('img-input');
+    // FUNÇÃO QUE CARREGA AS IMAGENS AUTOMATICAMENTE DO GITHUB
+    window.addEventListener('DOMContentLoaded', async () => {
+        const statusDiv = document.getElementById('layout-status');
+        const fileCount = document.getElementById('file-count');
+        try {
+            for(let i = 1; i <= 17; i++) {
+                fileCount.innerText = `A carregar imagem ${i}/17...`;
+                const resp = await fetch(`img/${i}.png`);
+                
+                if(!resp.ok) throw new Error(`Não foi possível encontrar img/${i}.png`);
+                
+                const buffer = await resp.arrayBuffer();
+                imagesData[i] = { buffer: buffer, type: 'image/png' };
+                
+                if(i === 16) {
+                    const blob = new Blob([buffer], { type: 'image/png' });
+                    bgUrl16 = URL.createObjectURL(blob);
+                }
+            }
+            statusDiv.innerHTML = '✅ Layout Oficial Carregado com Sucesso!';
+            fileCount.innerText = '17 / 17 imagens carregadas prontas para uso';
+        } catch(e) {
+            console.error(e);
+            statusDiv.innerHTML = '⚠️ Erro ao carregar Layout. Verifique se a pasta "img" está no GitHub com os arquivos 1.png a 17.png.';
+            statusDiv.style.background = '#ffebee';
+            statusDiv.style.color = '#c62828';
+            fileCount.innerText = '0 / 17 imagens';
+        }
+    });
 
+    // OVERRIDE MANUAL (CASO O UTILIZADOR QUEIRA CARREGAR UM DESIGN DIFERENTE)
+    const imgInput = document.getElementById('img-input');
     imgInput.addEventListener('change', async (e) => {
         const files = Array.from(e.target.files);
+        imagesData = {}; // Limpa os anteriores
         for (let file of files) {
             const numMatch = file.name.match(/\d+/);
             if (numMatch) {
@@ -226,7 +255,8 @@
                 }
             }
         }
-        document.getElementById('file-count').innerText = `${Object.keys(imagesData).length} / 17 imagens carregadas`;
+        document.getElementById('layout-status').innerHTML = '✅ Layout Personalizado Aplicado!';
+        document.getElementById('file-count').innerText = `${Object.keys(imagesData).length} / 17 imagens carregadas manualmente`;
         if(document.getElementById('preview-section').style.display === 'flex') renderPreview();
     });
 
@@ -315,8 +345,8 @@
     async function generateProfessionalPDF() {
         const client = document.getElementById('client-name').value.trim();
         const selectedRows = getSelectedItems();
-        if (Object.keys(imagesData).length < 16) return alert("⚠️ Carregue as 17 imagens primeiro!");
-        if (selectedRows.length === 0) return alert("⚠️ Selecione ao menos um serviço!");
+        if (Object.keys(imagesData).length < 16) return alert("⚠️ As imagens do layout não foram carregadas corretamente!");
+        if (selectedRows.length === 0) return alert("⚠️ Selecione ao menos um serviço na tabela!");
 
         document.getElementById('loading-overlay').style.display = 'flex';
         await new Promise(r => setTimeout(r, 100));
