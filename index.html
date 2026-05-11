@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub ADM - Fonte Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --navy: #002D5B; --accent: #00D1FF; --white: #FFFFFF; --bg: #f4f6f8; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: #333; }
+
+        /* CABEÇALHO */
+        .navbar { background: var(--navy); color: white; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .navbar h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 1px; }
+        .navbar span { font-size: 14px; opacity: 0.8; }
+
+        /* CONTAINER PRINCIPAL */
+        .container { max-width: 1000px; margin: 50px auto; padding: 0 20px; }
+        .welcome-text { text-align: center; margin-bottom: 40px; }
+        .welcome-text h2 { color: var(--navy); font-size: 32px; margin-bottom: 10px; }
+        .welcome-text p { color: #666; font-size: 16px; }
+
+        /* GRID DE FERRAMENTAS */
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        /* CARTÃO DE FERRAMENTA */
+        .tool-card {
+            background: white; border-radius: 12px; padding: 30px; text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: 0.3s;
+            border-top: 5px solid transparent; display: flex; flex-direction: column; height: 100%;
+        }
+        .tool-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 5px solid var(--accent); }
+        
+        .tool-icon { font-size: 50px; margin-bottom: 20px; display: block; }
+        .tool-card h3 { color: var(--navy); font-size: 22px; margin-top: 0; margin-bottom: 15px; }
+        .tool-card p { color: #666; font-size: 14px; line-height: 1.5; flex-grow: 1; margin-bottom: 25px; }
+
+        /* BOTÕES */
+        .btn {
+            background: var(--navy); color: white; text-decoration: none; padding: 12px 25px;
+            border-radius: 6px; font-weight: bold; text-transform: uppercase; font-size: 14px; transition: 0.2s;
+        }
+        .btn:hover { background: var(--accent); color: var(--navy); }
+        
+        .btn-disabled { background: #ccc; cursor: not-allowed; color: #666; }
+        .btn-disabled:hover { background: #ccc; color: #666; }
+
+        /* RODAPÉ */
+        .footer { text-align: center; margin-top: 60px; padding: 20px; color: #888; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1>FONTE HUB</h1>
+        <span>Painel Administrativo Interno</span>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-text">
+            <h2>Portal de Ferramentas</h2>
+            <p>Selecione a aplicação que deseja utilizar para gerar os seus documentos.</p>
+        </div>
+
+        <div class="tools-grid">
+            <div class="tool-card">
+                <span class="tool-icon">📄</span>
+                <h3>Gerador de Propostas</h3>
+                <p>Crie propostas comerciais em PDF de alta resolução com cálculo automático de valores, paginação e descontos.</p>
+                <a href="proposta.html" class="btn">Abrir Gerador</a>
+            </div>
+
+            <div class="tool-card">
+                <span class="tool-icon">📊</span>
+                <h3>Tabela de Rateio</h3>
+                <p>Gere e imprima tabelas de rateio de centro de custo, faturamento e contas para o financeiro.</p>
+                <a href="rateio.html" class="btn">Abrir Gerador</a>
+            </div>
+
+            <div class="tool-card" style="border-top: 5px solid #eee;">
+                <span class="tool-icon">✍️</span>
+                <h3>Gerador de Contratos</h3>
+                <p>Ferramenta em desenvolvimento. Permitirá gerar minutas e contratos de aluguer automaticamente.</p>
+                <a href="#" class="btn btn-disabled">Em Breve</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2026 Fonte Hub - Ferramentas Administrativas
+    </div>
+
+</body>
+</html>
