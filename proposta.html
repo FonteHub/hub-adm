@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fonte Hub - Gerador Proposta Comercial</title>
+    <title>Fonte Hub - Gerador Proposta Comercial V18</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -74,7 +74,7 @@
         <h2>1. Dados do Cliente e Imagens</h2>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
             <div>
-                <label style="display:block; font-weight:bold; margin-bottom:5px;">Carregar Slides (Selecione PNGs de 1 a 17 simultaneamente)</label>
+                <label style="display:block; font-weight:bold; margin-bottom:5px;">Carregar Slides (Selecione PNGs de 1 a 17)</label>
                 <input type="file" id="img-input" multiple accept="image/*" style="width:100%">
             </div>
             <div>
@@ -204,6 +204,9 @@
 </div>
 
 <script>
+    // FORMATAÇÃO NO TOPO (Corrige o erro do ecrã em branco)
+    const fmt = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
     let imagesData = {};
     let bgUrl16 = "";
 
@@ -226,8 +229,6 @@
         document.getElementById('file-count').innerText = `${Object.keys(imagesData).length} / 17 imagens carregadas`;
         if(document.getElementById('preview-section').style.display === 'flex') renderPreview();
     });
-
-    const fmt = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
     function getSelectedItems() {
         return Array.from(document.querySelectorAll('.srv-check:checked')).map(cb => {
@@ -330,7 +331,6 @@
                 return dataObj.type.includes('png') ? await pdfDoc.embedPng(dataObj.buffer) : await pdfDoc.embedJpg(dataObj.buffer);
             }
 
-            // 1. CAPAS 1 A 8
             for (let i = 1; i <= 8; i++) {
                 if (imagesData[i]) {
                     const img = await embedCorrectImage(imagesData[i]);
@@ -338,14 +338,12 @@
                 }
             }
 
-            // 2. SLIDE 9 (BENEFÍCIOS) - CONDICIONAL
             const needsSlide9 = selectedRows.some(r => r.slides.includes(10) || r.slides.includes(11));
             if (needsSlide9 && imagesData[9]) {
                 const img = await embedCorrectImage(imagesData[9]);
                 pdfDoc.addPage([1280, 720]).drawImage(img, { x: 0, y: 0, width: 1280, height: 720 });
             }
 
-            // 3. SLIDES DE PRODUTO (10 A 15)
             const extraSlides = [...new Set(selectedRows.flatMap(r => r.slides))].sort((a,b) => a-b);
             for (let s of extraSlides) {
                 if (s >= 10 && s <= 15 && imagesData[s]) {
@@ -354,7 +352,6 @@
                 }
             }
 
-            // 4. PROPOSTA DINÂMICA (SLIDE 16)
             const ITEMS_PER_PAGE = 7;
             const totalPages = Math.ceil(selectedRows.length / ITEMS_PER_PAGE);
             const dataAtual = new Date().toLocaleDateString('pt-BR');
@@ -427,7 +424,6 @@
                 }
             }
 
-            // 5. SLIDE 17 (CONTATO)
             if (imagesData[17]) {
                 const img = await embedCorrectImage(imagesData[17]);
                 pdfDoc.addPage([1280, 720]).drawImage(img, { x: 0, y: 0, width: 1280, height: 720 });
